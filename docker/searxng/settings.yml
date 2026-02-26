@@ -1,0 +1,73 @@
+# SearXNG settings for OpenDocGen
+
+general:
+  debug: false
+  instance_name: "OpenDocGen Search"
+  privacypolicy_url: false
+  contact_url: false
+  enable_metrics: true
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: ""
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
+  formats:
+    - html
+    - json
+    - csv
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "ultra-secret-key-change-in-production"
+  base_url: false
+  image_proxy: true
+  http_protocol_version: "1.1"
+
+ui:
+  static_path: ""
+  templates_path: ""
+  default_theme: oscar
+  default_locale: ""
+  theme_args:
+    oscar_style: bootstrap4
+
+redis:
+  url: false
+  db: 0
+
+engines:
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    timeout: 4.0
+    disabled: false
+
+  - name: bing
+    engine: bing
+    shortcut: bi
+    api_key: 'your-bing-api-key'
+    disabled: true
+
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: dd
+    disabled: false
+
+  - name: google
+    engine: google
+    shortcut: go
+    disabled: true
+
+  - name: qwant
+    engine: qwant
+    shortcut: qw
+    disabled: false
+
+doi_resolvers:
+  oai: https://doi.org/
+  sci-hub: https://sci-hub.se/
+
+default_doi_resolver: oai

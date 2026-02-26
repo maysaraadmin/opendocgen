@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  opendocgen:
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8000:8000"
+      - "5678:5678"  # debugpy
+    environment:
+      - DEBUG=true
+      - LOG_LEVEL=DEBUG
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - SEARXNG_URL=http://searxng:8080
+      - BROWSERLESS_URL=http://browserless:3000
+    volumes:
+      - ..:/app
+      - ollama_data:/root/.ollama
+    depends_on:
+      - ollama
+      - searxng
+    networks:
+      - opendocgen-network
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - opendocgen-network
+
+  searxng:
+    image: searxng/searxng:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./searxng/settings.yml:/etc/searxng/settings.yml
+    environment:
+      - BASE_URL=http://localhost:8080/
+    networks:
+      - opendocgen-network
+
+volumes:
+  ollama_data:
+
+networks:
+  opendocgen-network:
+    driver: bridge

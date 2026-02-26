@@ -1,0 +1,33 @@
+# Core dependencies - using already installed versions
+crewai
+langchain
+langchain-ollama
+chromadb
+requests>=2.31.0
+pydantic>=2.0.0
+
+# API - using already installed versions  
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-multipart>=0.0.6
+
+# Data analysis and visualization - using already installed versions
+pandas>=2.0.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# Document processing - using already installed versions
+python-docx>=0.8.11
+PyPDF2>=3.0.0
+unstructured>=0.11.0
+
+# Web and HTTP - using already installed versions
+beautifulsoup4>=4.12.0
+aiofiles>=23.0.0
+
+# Configuration and utilities - using already installed versions
+pyyaml>=6.0.1
+python-dotenv>=1.0.0
+tenacity>=8.2.0
+rich>=13.0.0
+typer>=0.9.0
