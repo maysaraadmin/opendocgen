@@ -61,7 +61,7 @@ class StatisticalTools:
         """Perform correlation analysis."""
         try:
             if len(x_data) != len(y_data):
-                return {"error": "x and y data must have the same length"}
+                return {"error": "x and y data must have same length"}
             
             if not self.available:
                 # Basic correlation calculation without scipy
@@ -72,7 +72,13 @@ class StatisticalTools:
                 sum_x2 = sum(x ** 2 for x in x_data)
                 sum_y2 = sum(y ** 2 for y in y_data)
                 
-                correlation = (n * sum_xy - sum_x * sum_y) / ((n * sum_x2 - sum_x ** 2) ** 0.5 * (n * sum_y2 - sum_y ** 2) ** 0.5)
+                # Calculate correlation with proper formula
+                denominator = ((n * sum_x2 - sum_x ** 2) * (n * sum_y2 - sum_y ** 2)) ** 0.5
+                
+                if denominator == 0:
+                    return {"error": "Cannot calculate correlation: zero denominator"}
+                
+                correlation = (n * sum_xy - sum_x * sum_y) / denominator
                 
                 return {
                     "success": True,
@@ -111,7 +117,7 @@ class StatisticalTools:
             return {"error": f"Distribution analysis failed: {str(e)}"}
     
     async def outlier_detection(self, data: List[Union[int, float]], method: str = "iqr") -> Dict[str, Any]:
-        """Detect outliers in the data."""
+        """Detect outliers in data."""
         try:
             if not data:
                 return {"error": "No data provided"}

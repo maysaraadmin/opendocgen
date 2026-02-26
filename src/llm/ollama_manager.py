@@ -34,8 +34,16 @@ class OllamaManager:
             print(f"Failed to initialize Ollama: {e}")
             return False
     
-    def get_llm(self) -> Optional[BaseLanguageModel]:
+    def get_llm(self, model: str = None) -> Optional[BaseLanguageModel]:
         """Get the initialized LLM instance."""
+        if model and model != self.settings.default_model:
+            # Create a new LLM instance for the specified model
+            return OllamaLLM(
+                model=model,
+                base_url=self.settings.ollama_base_url,
+                temperature=0.7,
+                max_tokens=2048,
+            )
         return self._llm
     
     async def generate_response(

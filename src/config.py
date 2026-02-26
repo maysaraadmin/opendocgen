@@ -10,6 +10,9 @@ from pydantic import Field
 from pydantic_settings import BaseSettings
 
 
+from pydantic_settings import BaseSettings
+
+
 class Settings(BaseSettings):
     """Application settings."""
     
@@ -28,6 +31,12 @@ class Settings(BaseSettings):
     embedding_model: str = Field(default="nomic-embed-text", env="EMBEDDING_MODEL")
     ollama_num_gpu: int = Field(default=35, env="OLLAMA_NUM_GPU")
     ollama_keep_alive: str = Field(default="24h", env="OLLAMA_KEEP_ALIVE")
+    
+    # CrewAI LLM Configuration (Required for Ollama)
+    openai_api_key: str = Field(default="sk-dummy-key-for-crewai-ollama", env="OPENAI_API_KEY")
+    openai_base_url: str = Field(default="http://localhost:11434/v1", env="OPENAI_BASE_URL")
+    openai_model_name: str = Field(default="llama3.2", env="OPENAI_MODEL_NAME")
+    crewai_llm_provider: str = Field(default="ollama", env="CREWAI_LLM_PROVIDER")
     
     # SearXNG Configuration
     searxng_url: str = Field(default="http://localhost:8080", env="SEARXNG_URL")
@@ -133,3 +142,7 @@ def create_directories():
     
     for directory in directories:
         directory.mkdir(parents=True, exist_ok=True)
+
+
+# Alias for backward compatibility
+Config = Settings

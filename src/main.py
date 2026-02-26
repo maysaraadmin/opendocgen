@@ -18,13 +18,17 @@ from .config import get_settings, create_directories
 from .core.orchestrator import Orchestrator
 from .utils.logger import setup_logging
 
-# Setup logging
-setup_logging()
-logger = logging.getLogger(__name__)
-console = Console()
 
-# Global orchestrator instance
-orchestrator: Orchestrator = None
+class OpenDocGen:
+    """Main OpenDocGen application class."""
+    
+    def __init__(self):
+        """Initialize OpenDocGen."""
+        self.app = create_app()
+    
+    def get_app(self):
+        """Get the FastAPI application."""
+        return self.app
 
 
 @asynccontextmanager
@@ -32,6 +36,7 @@ async def lifespan(app: FastAPI):
     """Application lifespan manager."""
     global orchestrator
     
+    console = Console()
     settings = get_settings()
     
     # Create necessary directories
@@ -84,3 +89,15 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+
+
+if __name__ == "__main__":
+    import uvicorn
+    settings = get_settings()
+    uvicorn.run(
+        app,
+        host=settings.app_host,
+        port=settings.app_port,
+        log_level=settings.log_level.lower(),
+        reload=settings.debug
+    )
